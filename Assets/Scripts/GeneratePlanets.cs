@@ -10,7 +10,7 @@ public class GeneratePlanets : MonoBehaviour
     public GameObject planet;
     // Start is called before the first frame update
     private int Y;
-    void Start()
+    void Awake()
     {
         for (int i = 10; i < 31; i+=4)
         {
@@ -20,11 +20,7 @@ public class GeneratePlanets : MonoBehaviour
         Y = 34;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 
     internal void PoolMe(GameObject gameObject)
     {

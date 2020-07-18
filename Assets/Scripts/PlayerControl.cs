@@ -8,9 +8,14 @@ public class PlayerControl : MonoBehaviour
 {
     private Rigidbody2D rb_player;
     public static bool isConnected = false;
+    public GameObject force;
     private GameObject[] obstacles;
     public GameObject leftBorder, rightBorder, lowerBorder;
+    private Collider2D leftCollider, rightCollider, lowerCollider;
+    private SpriteRenderer leftRenderer, rightRenderer, lowerRenderer;
     private float borderLength;
+    private Color half_clear;
+    private GameControllerScript gamecontroller;
     void Start()
     {
         isConnected = false;
@@ -18,24 +23,48 @@ public class PlayerControl : MonoBehaviour
         rb_player = GetComponent<Rigidbody2D>();
         rb_player.velocity = new Vector2(0, 8f);
 
-        //obstacles = GameObject.FindGameObjectsWithTag("ObstacleTag");
+        obstacles = GameObject.FindGameObjectsWithTag("ObstacleTag");
+        leftCollider = leftBorder.GetComponent<BoxCollider2D>();
+        rightCollider = rightBorder.GetComponent<BoxCollider2D>();
+        lowerCollider = lowerBorder.GetComponent<BoxCollider2D>();
+
+        leftRenderer = leftBorder.GetComponent<SpriteRenderer>();
+        rightRenderer = rightBorder.GetComponent<SpriteRenderer>();
+        lowerRenderer = lowerBorder.GetComponent<SpriteRenderer>();
+
+        half_clear = new Color(1, 1, 1, 0.5f);
+
+        gamecontroller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerScript>();
+
     }
 
     void Update()
     {
-        obstacles = GameObject.FindGameObjectsWithTag("ObstacleTag");
+        //obstacles = GameObject.FindGameObjectsWithTag("ObstacleTag");
 
         if (isConnected)
         {
-            leftBorder.GetComponent<BoxCollider2D>().enabled = false;
-            rightBorder.GetComponent<BoxCollider2D>().enabled = false;
-            lowerBorder.GetComponent<BoxCollider2D>().enabled = false;
+            leftCollider.enabled = false;
+            leftRenderer.color = half_clear;
+
+            rightCollider.enabled = false;
+            rightRenderer.color = half_clear;
+
+            lowerCollider.enabled = false;
+            lowerRenderer.color = half_clear;
+
         }
         else if (!isConnected)
         {
-            leftBorder.GetComponent<BoxCollider2D>().enabled = true;
-            rightBorder.GetComponent<BoxCollider2D>().enabled = true;
-            lowerBorder.GetComponent<BoxCollider2D>().enabled = true;
+            leftCollider.enabled = true;
+            leftRenderer.color = Color.white;
+
+            rightCollider.enabled = true;
+            rightRenderer.color = Color.white;
+
+            lowerCollider.enabled = true;
+            lowerRenderer.color = Color.white;
+
         }
 
         if (rb_player.velocity.magnitude < 8) rb_player.velocity = rb_player.velocity.normalized * 8; //keep velocity same
@@ -84,7 +113,18 @@ public class PlayerControl : MonoBehaviour
 
     private void GameOver()
     {
-        SceneManager.LoadScene("GameScene");
+        force.SetActive(true);
+        rb_player.simulated = false;
+
+
+        Invoke("OpenPanel", 2f);
+
+
+    }
+    void OpenPanel()
+    {
+        gamecontroller.GameOver();
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
