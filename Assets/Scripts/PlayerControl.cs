@@ -7,15 +7,16 @@ using UnityEngine.SceneManagement;
 public class PlayerControl : MonoBehaviour
 {
     private Rigidbody2D rb_player;
-    private bool isConnected = false;
+    public static bool isConnected = false;
     private GameObject[] obstacles;
     public GameObject leftBorder, rightBorder, lowerBorder;
     private float borderLength;
     void Start()
     {
+        isConnected = false;
         borderLength = leftBorder.GetComponent<BoxCollider2D>().bounds.size.y;
         rb_player = GetComponent<Rigidbody2D>();
-        rb_player.velocity = new Vector2(0, 3f);
+        rb_player.velocity = new Vector2(0, 8f);
 
         //obstacles = GameObject.FindGameObjectsWithTag("ObstacleTag");
     }
@@ -23,7 +24,6 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         obstacles = GameObject.FindGameObjectsWithTag("ObstacleTag");
-        InfiniteBorders();
 
         if (isConnected)
         {
@@ -38,7 +38,7 @@ public class PlayerControl : MonoBehaviour
             lowerBorder.GetComponent<BoxCollider2D>().enabled = true;
         }
 
-        if (rb_player.velocity.magnitude < 3) rb_player.velocity = rb_player.velocity.normalized * 3; //keep velocity same
+        if (rb_player.velocity.magnitude < 8) rb_player.velocity = rb_player.velocity.normalized * 8; //keep velocity same
 
         if (Input.GetMouseButtonDown(0)) //clicked
         {
@@ -80,11 +80,6 @@ public class PlayerControl : MonoBehaviour
         }
 
         return res;
-    }
-
-    private void InfiniteBorders()
-    {
-        //make left and right borders infinite
     }
 
     private void GameOver()
