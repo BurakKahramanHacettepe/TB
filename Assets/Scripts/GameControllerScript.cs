@@ -1,22 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameControllerScript : MonoBehaviour
 {
-    // Start is called before the first frame update
     public GameObject GameOverPanel;
+    public TextMeshProUGUI scoreText;
+    private Transform player;
+    private float maxHigh = 0;
+    private int highScore = 0;
 
     void Start()
     {
-        
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        highScore = PlayerPrefs.GetInt("highscore");
+        //Debug.Log(highScore);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (Mathf.RoundToInt(player.position.y) > maxHigh) //to avoid lose score when rotating
+        {
+            maxHigh = Mathf.RoundToInt(player.position.y);
+        }
+        scoreText.SetText(maxHigh.ToString());
+        if(Mathf.RoundToInt(maxHigh) > highScore) //save highscore
+        {
+            highScore = Mathf.RoundToInt(maxHigh);
+            PlayerPrefs.SetInt("highscore", highScore);
+        }
     }
     public void GameOver()
     {
@@ -25,8 +39,12 @@ public class GameControllerScript : MonoBehaviour
 
     public void Retry()
     {
-
-        SceneManager.LoadScene("GameScene",LoadSceneMode.Single);
+        LeanTween.scale(GameOverPanel.gameObject, new Vector3(0, 0, 0), 0.5f).setOnComplete(LoadGameScene);
+        
+    }
+    private void LoadGameScene()
+    {
+        SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
     }
 
 }

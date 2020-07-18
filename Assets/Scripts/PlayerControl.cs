@@ -117,7 +117,7 @@ public class PlayerControl : MonoBehaviour
         rb_player.simulated = false;
 
 
-        Invoke("OpenPanel", 2f);
+        Invoke("OpenPanel", 1f);
 
 
     }
