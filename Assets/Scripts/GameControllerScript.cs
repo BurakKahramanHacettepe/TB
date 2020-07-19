@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameControllerScript : MonoBehaviour
 {
     public GameObject GameOverPanel;
+    public TextMeshProUGUI panelScoreText;
     public TextMeshProUGUI scoreText;
 
     public ParticleSystem trail;
@@ -72,9 +73,8 @@ public class GameControllerScript : MonoBehaviour
     }
     void OpenPanel()
     {
+        panelScoreText.SetText("High score: " + highScore);
         GameOverPanel.SetActive(true);
-
-
     }
     void Particles()
     {
