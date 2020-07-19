@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
-    private Camera cam;
 
 
     private Rigidbody2D rb_player;
@@ -40,7 +39,6 @@ public class PlayerControl : MonoBehaviour
         half_clear = new Color(1, 1, 1, 0.25f);
 
         gamecontroller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerScript>();
-        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
 
     }
@@ -52,30 +50,24 @@ public class PlayerControl : MonoBehaviour
         if (isConnected)
         {
             leftCollider.enabled = false;
-            leftBorder.transform.GetChild(0).gameObject.SetActive(false);
             leftRenderer.color = half_clear;
 
             rightCollider.enabled = false;
-            rightCollider.transform.GetChild(0).gameObject.SetActive(false);
             rightRenderer.color = half_clear;
 
             lowerCollider.enabled = false;
-            lowerCollider.transform.GetChild(0).gameObject.SetActive(false);
             lowerRenderer.color = half_clear;
 
         }
         else if (!isConnected)
         {
             leftCollider.enabled = true;
-            leftCollider.transform.GetChild(0).gameObject.SetActive(true);
             leftRenderer.color = Color.white;
 
             rightCollider.enabled = true;
-            rightCollider.transform.GetChild(0).gameObject.SetActive(true);
             rightRenderer.color = Color.white;
 
             lowerCollider.enabled = true;
-            lowerCollider.transform.GetChild(0).gameObject.SetActive(true);
             lowerRenderer.color = Color.white;
 
         }
@@ -136,57 +128,13 @@ public class PlayerControl : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.CompareTag("SlowZone"))
-        {
-            Slow();
-        }
-        else
-        {
+        
             GameOver(collision.gameObject);
-        }
-    }
-
-    private void Slow()
-    {
-        SlowTime();
-        zoomIn();
-    }
-    private void Normalize()
-    {
-        if (!lost)
-        {
-            FastenTime();
-            zoomOut();
-        }
         
     }
 
-    public void SlowTime()
-    {
-        LeanTween.value(gameObject, 1f, 0.05f, 0.5f).setOnUpdate((float flt) => {
-            Time.timeScale = flt;
-        }).setIgnoreTimeScale(true).setEase(LeanTweenType.easeOutExpo).setOnComplete(Normalize);
-    }
+   
 
     
-    public void FastenTime()
-    {
-        LeanTween.value(gameObject, 0.05f, 1f, 0.5f).setOnUpdate((float flt) => {
-            Time.timeScale = flt;
-        }).setIgnoreTimeScale(true).setEase(LeanTweenType.easeInExpo);
-    }
-    public void zoomIn()
-    {
-        LeanTween.value(cam.gameObject, cam.orthographicSize, 2f, 0.4f).setOnUpdate((float flt) => {
-            cam.orthographicSize = flt;
-        }).setIgnoreTimeScale(true).setEase(LeanTweenType.easeOutExpo);
-        LeanTween.moveLocalY(cam.gameObject, 0, 0.4f).setIgnoreTimeScale(true).setEase(LeanTweenType.easeOutExpo);
-    }
-    public void zoomOut()
-    {
-        LeanTween.value(cam.gameObject, cam.orthographicSize, 5f, 0.4f).setOnUpdate((float flt) => {
-            cam.orthographicSize = flt;
-        }).setIgnoreTimeScale(true).setEase(LeanTweenType.easeInExpo);
-        LeanTween.moveLocalY(cam.gameObject, 3, 0.4f).setIgnoreTimeScale(true).setEase(LeanTweenType.easeInExpo);
-    }
+   
 }

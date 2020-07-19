@@ -20,16 +20,21 @@ public class GameControllerScript : MonoBehaviour
 
     private GameObject player;
     private Transform player_t;
+
     private float maxHigh = 0;
     private int highScore = 0;
 
     private CameraShake camshake;
+    private Camera cam;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         player_t = player.transform;
         highScore = PlayerPrefs.GetInt("highscore");
         camshake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+
     }
 
     void Update()
@@ -47,6 +52,7 @@ public class GameControllerScript : MonoBehaviour
     }
     public void GameOver(GameObject obs)
     {
+        Slow();
         Vector3 offset = obs.transform.position - shockwave.transform.position;
 
         shockwave.transform.rotation = Quaternion.LookRotation(
@@ -60,16 +66,37 @@ public class GameControllerScript : MonoBehaviour
         force.transform.position = obs.transform.position;
         Particles();
         player.GetComponent<Rigidbody2D>().simulated = false;
-        Invoke("OpenPanel", 0.2f);
+        Invoke("OpenPanel", 0.15f);
 
+    }
+    private void Slow()
+    {
+        SlowTime();
+        zoomIn();
+    }
+    public void SlowTime()
+    {
+        LeanTween.value(gameObject, 1f, 0.05f, 0.5f).setOnUpdate((float flt) => {
+            Time.timeScale = flt;
+        }).setIgnoreTimeScale(true).setEase(LeanTweenType.easeOutQuad);
+    }
+
+
+    public void zoomIn()
+    {
+        float time = 1f;
+        LeanTween.value(cam.gameObject, cam.orthographicSize, 2f, time).setOnUpdate((float flt) => {
+            cam.orthographicSize = flt;
+        }).setIgnoreTimeScale(true).setEase(LeanTweenType.easeOutExpo);
+        LeanTween.moveLocalY(cam.gameObject, 0, time).setIgnoreTimeScale(true).setEase(LeanTweenType.easeOutQuad);
     }
     public void Explosion()
     {
         Material mat = shockwave.GetComponent<Renderer>().material; 
 
-        LeanTween.value(shockwave, 0f, 1f, 3f).setOnUpdate((float flt) => {
+        LeanTween.value(shockwave, 0f, 1.5f, 10f).setOnUpdate((float flt) => {
             mat.SetFloat("Vector1_46709344", flt);//Color1
-        }).setIgnoreTimeScale(true);
+        }).setIgnoreTimeScale(true).setEase(LeanTweenType.easeOutQuad); ;
     }
     void OpenPanel()
     {
