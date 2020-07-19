@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,9 +7,10 @@ using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
+    private Camera cam;
+
     private Rigidbody2D rb_player;
     public static bool isConnected = false;
-    public GameObject force;
     private GameObject[] obstacles;
     public GameObject leftBorder, rightBorder, lowerBorder;
     private Collider2D leftCollider, rightCollider, lowerCollider;
@@ -16,6 +18,8 @@ public class PlayerControl : MonoBehaviour
     private float borderLength;
     private Color half_clear;
     private GameControllerScript gamecontroller;
+
+    public bool lost;
     void Start()
     {
         isConnected = false;
@@ -32,9 +36,11 @@ public class PlayerControl : MonoBehaviour
         rightRenderer = rightBorder.GetComponent<SpriteRenderer>();
         lowerRenderer = lowerBorder.GetComponent<SpriteRenderer>();
 
-        half_clear = new Color(1, 1, 1, 0.5f);
+        half_clear = new Color(1, 1, 1, 0.25f);
 
         gamecontroller = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameControllerScript>();
+        cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+
 
     }
 
@@ -82,7 +88,7 @@ public class PlayerControl : MonoBehaviour
             isConnected = false;
             if(transform.position.x <= leftBorder.transform.position.x || transform.position.x >= rightBorder.transform.position.x)
             {
-                GameOver();
+                GameOver(transform.position.x > 0 ? rightBorder : leftBorder);
             }
         }
     }
@@ -111,31 +117,67 @@ public class PlayerControl : MonoBehaviour
         return res;
     }
 
-    private void GameOver()
+    private void GameOver(GameObject obs)
     {
-        force.SetActive(true);
-        rb_player.simulated = false;
+        
 
-
-        Invoke("OpenPanel", 1f);
+        gamecontroller.GameOver(obs);
 
 
     }
-    void OpenPanel()
-    {
-        gamecontroller.GameOver();
-
-    }
+   
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "ObstacleTag")
+        if(collision.gameObject.CompareTag("SlowZone"))
         {
-            GameOver();
+            Slow();
         }
-        else if(collision.gameObject.tag == "Finish")
+        else
         {
-            GameOver();
+            GameOver(collision.gameObject);
         }
+    }
+
+    private void Slow()
+    {
+        SlowTime();
+        zoomIn();
+    }
+    private void Normalize()
+    {
+        if (!lost)
+        {
+            FastenTime();
+            zoomOut();
+        }
+        
+    }
+
+    public void SlowTime()
+    {
+        LeanTween.value(gameObject, 1f, 0.05f, 0.5f).setOnUpdate((float flt) => {
+            Time.timeScale = flt;
+        }).setIgnoreTimeScale(true).setEase(LeanTweenType.easeOutExpo).setOnComplete(Normalize);
+    }
+    public void FastenTime()
+    {
+        LeanTween.value(gameObject, 0.05f, 1, 0.5f).setOnUpdate((float flt) => {
+            Time.timeScale = flt;
+        }).setIgnoreTimeScale(true).setEase(LeanTweenType.easeInExpo);
+    }
+    public void zoomIn()
+    {
+        LeanTween.value(cam.gameObject, cam.orthographicSize, 2f, 0.4f).setOnUpdate((float flt) => {
+            cam.orthographicSize = flt;
+        }).setIgnoreTimeScale(true).setEase(LeanTweenType.easeOutExpo);
+        LeanTween.moveLocalY(cam.gameObject, 0, 0.4f).setIgnoreTimeScale(true).setEase(LeanTweenType.easeOutExpo);
+    }
+    public void zoomOut()
+    {
+        LeanTween.value(cam.gameObject, cam.orthographicSize, 5f, 0.4f).setOnUpdate((float flt) => {
+            cam.orthographicSize = flt;
+        }).setIgnoreTimeScale(true).setEase(LeanTweenType.easeInExpo);
+        LeanTween.moveLocalY(cam.gameObject, 3, 0.4f).setIgnoreTimeScale(true).setEase(LeanTweenType.easeInExpo);
     }
 }
