@@ -9,6 +9,7 @@ public class PlayerControl : MonoBehaviour
 {
     private Camera cam;
 
+
     private Rigidbody2D rb_player;
     public static bool isConnected = false;
     private GameObject[] obstacles;
@@ -51,24 +52,30 @@ public class PlayerControl : MonoBehaviour
         if (isConnected)
         {
             leftCollider.enabled = false;
+            leftBorder.transform.GetChild(0).gameObject.SetActive(false);
             leftRenderer.color = half_clear;
 
             rightCollider.enabled = false;
+            rightCollider.transform.GetChild(0).gameObject.SetActive(false);
             rightRenderer.color = half_clear;
 
             lowerCollider.enabled = false;
+            lowerCollider.transform.GetChild(0).gameObject.SetActive(false);
             lowerRenderer.color = half_clear;
 
         }
         else if (!isConnected)
         {
             leftCollider.enabled = true;
+            leftCollider.transform.GetChild(0).gameObject.SetActive(true);
             leftRenderer.color = Color.white;
 
             rightCollider.enabled = true;
+            rightCollider.transform.GetChild(0).gameObject.SetActive(true);
             rightRenderer.color = Color.white;
 
             lowerCollider.enabled = true;
+            lowerCollider.transform.GetChild(0).gameObject.SetActive(true);
             lowerRenderer.color = Color.white;
 
         }
@@ -160,9 +167,11 @@ public class PlayerControl : MonoBehaviour
             Time.timeScale = flt;
         }).setIgnoreTimeScale(true).setEase(LeanTweenType.easeOutExpo).setOnComplete(Normalize);
     }
+
+    
     public void FastenTime()
     {
-        LeanTween.value(gameObject, 0.05f, 1, 0.5f).setOnUpdate((float flt) => {
+        LeanTween.value(gameObject, 0.05f, 1f, 0.5f).setOnUpdate((float flt) => {
             Time.timeScale = flt;
         }).setIgnoreTimeScale(true).setEase(LeanTweenType.easeInExpo);
     }
