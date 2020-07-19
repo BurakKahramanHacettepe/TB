@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using TMPro;
@@ -17,6 +18,7 @@ public class GameControllerScript : MonoBehaviour
     public GameObject force;
     public GameObject shockwave;
 
+    public GameObject orbit;
 
     private GameObject player;
     private Transform player_t;
@@ -52,6 +54,8 @@ public class GameControllerScript : MonoBehaviour
     }
     public void GameOver(GameObject obs)
     {
+        orbit.SetActive(false);
+        player.GetComponent<PlayerControl>().enabled = false;
         Slow();
         Vector3 offset = obs.transform.position - shockwave.transform.position;
 
@@ -124,4 +128,10 @@ public class GameControllerScript : MonoBehaviour
         SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
     }
 
+    public void Orbit(GameObject res,float distance)
+    {
+        orbit.transform.position = res.transform.position;
+        orbit.transform.localScale = new Vector2(distance/5f,distance/5f);
+
+    }
 }

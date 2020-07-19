@@ -12,6 +12,8 @@ public class PlayerControl : MonoBehaviour
     private Rigidbody2D rb_player;
     public static bool isConnected = false;
     private GameObject[] obstacles;
+
+
     public GameObject leftBorder, rightBorder, lowerBorder;
     private Collider2D leftCollider, rightCollider, lowerCollider;
     private SpriteRenderer leftRenderer, rightRenderer, lowerRenderer;
@@ -78,6 +80,7 @@ public class PlayerControl : MonoBehaviour
         {
             GetComponent<DistanceJoint2D>().enabled = true;
             GetComponent<DistanceJoint2D>().connectedBody = GetClosestObstacle().GetComponent<Rigidbody2D>();
+
             isConnected = true;
         }
         if (Input.GetMouseButtonUp(0)) //released
@@ -112,7 +115,7 @@ public class PlayerControl : MonoBehaviour
                 }
             }
         }
-
+        gamecontroller.Orbit(res,minDis);
         return res;
     }
 
