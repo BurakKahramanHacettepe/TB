@@ -26,7 +26,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_5359BE84: 5
-    - Vector1_56765CF7: 30
+    - Vector1_56765CF7: 11.02
     - Vector1_D36A118A: 2.08
     - _Layers: 3
     - _NoiseScale: 15
