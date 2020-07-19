@@ -41,7 +41,6 @@ public class PlanetScript : MonoBehaviour
 
         mat.SetColor("Color_6EF27D29",water);//Color1
         mat.SetColor("Color_A48BFEE5", earth);//Color2
-        mat.SetFloat("Vector1_5359BE84", Random.Range(2f, 5f));//Layers
         mat.SetFloat("Vector1_56765CF7", Random.Range(15f, 30f));//NoiseScale
         mat.SetVector("Vector2_5F3ACFEF", new Vector2(Random.Range(0f, 100f), Random.Range(0f, 100f)));//Noise Offset
 

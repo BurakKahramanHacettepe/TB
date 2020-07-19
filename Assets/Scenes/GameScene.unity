@@ -6738,7 +6738,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdbdaf5014087f74cae325ecd8e518dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  closest: {fileID: 0}
   leftBorder: {fileID: 283416744}
   rightBorder: {fileID: 30906099}
   lowerBorder: {fileID: 1026103598}
