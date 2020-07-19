@@ -8,16 +8,26 @@ public class GeneratePlanets : MonoBehaviour
 {
 
     public GameObject planet;
-    // Start is called before the first frame update
     private int Y;
+
+    private bool isFirstPlanet = true;
     void Awake()
     {
-        for (int i = 10; i < 31; i+=4)
+        for (int i = 6; i < 27; i+=4)
         {
-            float y_offset = Random.Range(-1f,1f);
+            float y_offset = Random.Range(-1f, 1f);
+
+            if (isFirstPlanet)
+            {
+                if(y_offset <= 0) Instantiate(planet, new Vector2(Random.Range(-2f, -1f), i - 1), Quaternion.identity);
+                else Instantiate(planet, new Vector2(Random.Range(1f, 2f), i - 1), Quaternion.identity);
+                isFirstPlanet = false;
+                continue;
+            }
+
             Instantiate(planet, new Vector2(Random.Range(-2f, 2f),i+y_offset), Quaternion.identity);
         }
-        Y = 34;
+        Y = 30;
     }
 
    

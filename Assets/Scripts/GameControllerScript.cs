@@ -130,8 +130,10 @@ public class GameControllerScript : MonoBehaviour
 
     public void Orbit(GameObject res,float distance)
     {
+        orbit.gameObject.SetActive(true);
         orbit.transform.position = res.transform.position;
         orbit.transform.localScale = new Vector2(distance/5f,distance/5f);
 
     }
+
 }

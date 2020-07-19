@@ -92,6 +92,8 @@ public class PlayerControl : MonoBehaviour
             {
                 GameOver(transform.position.x > 0 ? rightBorder : leftBorder);
             }
+
+            gamecontroller.orbit.gameObject.SetActive(false);
         }
     }
 
