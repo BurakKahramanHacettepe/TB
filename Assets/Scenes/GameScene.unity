@@ -162,7 +162,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 80a7d588f247ced42a185e146f7deea6, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 0.25
@@ -6232,6 +6232,8 @@ MonoBehaviour:
   force: {fileID: 417828740}
   shockwave: {fileID: 805386189}
   orbit: {fileID: 871990231}
+  explosionAudio: {fileID: 8300000, guid: 80a7d588f247ced42a185e146f7deea6, type: 3}
+  backgroundAudio: {fileID: 8300000, guid: d6695bb3090c5f540b42c4d6347904b0, type: 3}
 --- !u!4 &836507140
 Transform:
   m_ObjectHideFlags: 0

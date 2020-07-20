@@ -29,9 +29,11 @@ public class GameControllerScript : MonoBehaviour
     private CameraShake camshake;
     private Camera cam;
 
+    public AudioClip explosionAudio, backgroundAudio;
 
     void Start()
     {
+        PlayAudio(backgroundAudio);
         player = GameObject.FindGameObjectWithTag("Player");
         player_t = player.transform;
         highScore = PlayerPrefs.GetInt("highscore");
@@ -55,7 +57,7 @@ public class GameControllerScript : MonoBehaviour
     }
     public void GameOver(GameObject obs)
     {
-        transform.GetChild(0).GetComponent<AudioSource>().Play();
+        PlayAudio(explosionAudio);
         orbit.SetActive(false);
         player.GetComponent<PlayerControl>().enabled = false;
         Slow();
@@ -138,6 +140,14 @@ public class GameControllerScript : MonoBehaviour
         orbit.transform.position = res.transform.position;
         orbit.transform.localScale = new Vector2(distance/5f,distance/5f);
 
+    }
+
+    private void PlayAudio(AudioClip clip)
+    {
+        if (clip.GetInstanceID() == backgroundAudio.GetInstanceID()) transform.GetChild(0).GetComponent<AudioSource>().volume = 0.05f;
+        else transform.GetChild(0).GetComponent<AudioSource>().volume = 1f;
+        transform.GetChild(0).GetComponent<AudioSource>().clip = clip;
+        transform.GetChild(0).GetComponent<AudioSource>().Play();
     }
 
 }
