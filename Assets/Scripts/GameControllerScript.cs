@@ -29,6 +29,7 @@ public class GameControllerScript : MonoBehaviour
     private CameraShake camshake;
     private Camera cam;
 
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -54,6 +55,7 @@ public class GameControllerScript : MonoBehaviour
     }
     public void GameOver(GameObject obs)
     {
+        transform.GetChild(0).GetComponent<AudioSource>().Play();
         orbit.SetActive(false);
         player.GetComponent<PlayerControl>().enabled = false;
         Slow();
@@ -66,11 +68,13 @@ public class GameControllerScript : MonoBehaviour
         camshake.shakeDuration = 0.21f;
         Explosion();
         player.GetComponent<PlayerControl>().lost = true;
-
-        force.transform.position = obs.transform.position;
+        if (obs.CompareTag("ObstacleTag"))
+        {
+            force.transform.position = obs.transform.position;
+        }
         Particles();
         player.GetComponent<Rigidbody2D>().simulated = false;
-        Invoke("OpenPanel", 0.15f);
+        Invoke("OpenPanel", 0.25f);
 
     }
     private void Slow()
