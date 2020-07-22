@@ -40,6 +40,10 @@ public class GameControllerScript : MonoBehaviour
         camshake = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraShake>();
         cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
 
+       
+
+
+
     }
 
     void Update()
@@ -61,7 +65,19 @@ public class GameControllerScript : MonoBehaviour
         orbit.SetActive(false);
         player.GetComponent<PlayerControl>().enabled = false;
         Slow();
-        Vector3 offset = obs.transform.position - shockwave.transform.position;
+        if (obs.CompareTag("ObstacleTag"))
+        {
+            force.transform.position = obs.transform.position;
+        }
+        else if(obs.name == "leftBorder")
+        {
+            force.transform.position = player_t.position + Vector3.left;
+        }
+        else
+        {
+            force.transform.position = player_t.position + Vector3.right;
+        }
+        Vector3 offset = force.transform.position - shockwave.transform.position;
 
         shockwave.transform.rotation = Quaternion.LookRotation(
                                Vector3.forward, // Keep z+ pointing straight into the screen.
@@ -76,7 +92,15 @@ public class GameControllerScript : MonoBehaviour
         }
         Particles();
         player.GetComponent<Rigidbody2D>().simulated = false;
-        Invoke("OpenPanel", 0.25f);
+        if (PlayerPrefs.GetInt("firstTime") < 3)
+        {
+            Invoke("OpenPanel", 0.25f);
+            PlayerPrefs.SetInt("firstTime", PlayerPrefs.GetInt("firstTime") + 1);
+        }
+        else
+        {
+            Invoke("OpenPanel", 0.15f);
+        }
 
     }
     private void Slow()

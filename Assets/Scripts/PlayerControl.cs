@@ -11,7 +11,6 @@ public class PlayerControl : MonoBehaviour
 
     private Rigidbody2D rb_player;
     public static bool isConnected = false;
-    private GameObject[] obstacles;
 
 
     public GameObject leftBorder, rightBorder, lowerBorder;
@@ -21,6 +20,11 @@ public class PlayerControl : MonoBehaviour
     private Color half_clear;
     private GameControllerScript gamecontroller;
 
+    //private GameObject[] obstacles;
+    private GameObject[] obstacle_all = new GameObject[6];
+    public int offset = 1;
+
+
     public bool lost;
     void Start()
     {
@@ -29,7 +33,8 @@ public class PlayerControl : MonoBehaviour
         rb_player = GetComponent<Rigidbody2D>();
         rb_player.velocity = new Vector2(0, 8f);
 
-        obstacles = GameObject.FindGameObjectsWithTag("ObstacleTag");
+        setObstacleVectors();
+
         leftCollider = leftBorder.GetComponent<BoxCollider2D>();
         rightCollider = rightBorder.GetComponent<BoxCollider2D>();
         lowerCollider = lowerBorder.GetComponent<BoxCollider2D>();
@@ -47,7 +52,6 @@ public class PlayerControl : MonoBehaviour
 
     void Update()
     {
-        //obstacles = GameObject.FindGameObjectsWithTag("ObstacleTag");
 
         if (isConnected)
         {
@@ -101,7 +105,7 @@ public class PlayerControl : MonoBehaviour
     {
         float minDis = -1;
         GameObject res = null;
-        foreach (GameObject o in obstacles)
+        foreach (GameObject o in obstacle_all)
         {
             if(minDis == -1)
             {
@@ -121,6 +125,28 @@ public class PlayerControl : MonoBehaviour
         return res;
     }
 
+    //this function returns the closest obstacle to connect without Loops(has bugs, wasn't that much faster)
+    //private GameObject GetClosestObstacle2() 
+    //{
+    //    GameObject res;
+    //    float dist0 = Vector2.Distance(obstacles[0].transform.position, transform.position);
+    //    float dist1 = Vector2.Distance(obstacles[1].transform.position, transform.position);
+
+    //    if (dist0 < dist1)
+    //    {
+    //        res =  obstacles[0];
+    //        gamecontroller.Orbit(res, dist0);
+
+    //    }
+    //    else
+    //    {
+    //        res = obstacles[1];
+    //        gamecontroller.Orbit(res, dist1);
+    //    }
+
+    //    return res;
+    //}
+
     private void GameOver(GameObject obs)
     {
         
@@ -137,9 +163,31 @@ public class PlayerControl : MonoBehaviour
             GameOver(collision.gameObject);
         
     }
+    private void setObstacleVectors()
+    {
+        obstacle_all = GameObject.FindGameObjectsWithTag("ObstacleTag");
+        //obstacles = obstacle_all.Take(2).ToArray();
 
-   
 
-    
-   
+    }
+
+    //public void UpdateObstacleVectors(int offset)
+    //{
+    //    if (offset%5 ==0)
+    //    {
+    //        obstacles[0] = obstacle_all[5];
+    //        obstacles[1] = obstacle_all[0];
+    //    }
+    //    else
+    //    {
+    //        obstacles = obstacle_all.Skip(offset % 6).Take(2).ToArray();
+
+    //    }
+
+    //}
+
+
+
+
+
 }
