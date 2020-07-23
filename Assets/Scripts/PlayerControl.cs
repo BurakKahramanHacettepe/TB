@@ -105,17 +105,20 @@ public class PlayerControl : MonoBehaviour
     private GameObject GetClosestObstacle() //this function returns the closest obstacle to connect
     {
         float minDis = -1;
+        float radius = 0;
         GameObject res = null;
         foreach (GameObject o in obstacle_all)
         {
-            if(minDis == -1)
+            radius = o.GetComponent<SpriteRenderer>().size[0];
+            if (minDis == -1)
             {
-                minDis = Vector2.Distance(this.transform.position, o.transform.position);
+                minDis = Vector2.Distance(this.transform.position, o.transform.position)-radius;
+
                 res = o;
             }
             else
             {
-                if(Vector2.Distance(this.transform.position, o.transform.position) < minDis)
+                if (Vector2.Distance(this.transform.position, o.transform.position)-radius < minDis)
                 {
                     minDis = Vector2.Distance(this.transform.position, o.transform.position);
                     res = o;

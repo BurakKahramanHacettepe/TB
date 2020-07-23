@@ -66,7 +66,7 @@ public class PlanetScript : MonoBehaviour
 
     private void Pool()
     {
-        if (player.position.y -transform.position.y > 4f)
+        if (player.position.y -transform.position.y > 6f)
         {
             generate_planets.PoolMe(gameObject);
         }
