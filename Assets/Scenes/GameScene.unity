@@ -6975,7 +6975,7 @@ MonoBehaviour:
   leftBorder: {fileID: 283416744}
   rightBorder: {fileID: 30906099}
   lowerBorder: {fileID: 1026103598}
-  offset: 1
+  speed: 8
   lost: 0
 --- !u!58 &1571085562
 CircleCollider2D:
@@ -7012,7 +7012,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 1
+  m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!232 &1571085564
 DistanceJoint2D:
@@ -7032,7 +7032,7 @@ DistanceJoint2D:
   m_ConnectedAnchor: {x: 0, y: 0}
   m_AutoConfigureDistance: 1
   m_Distance: 1
-  m_MaxDistanceOnly: 1
+  m_MaxDistanceOnly: 0
 --- !u!114 &1571085566
 MonoBehaviour:
   m_ObjectHideFlags: 0

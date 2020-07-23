@@ -12,27 +12,17 @@ public class GeneratePlanets : MonoBehaviour
     private int Y;
     private bool isFirstPlanet = true;
 
-    //private PlayerControl playerControl;
 
     void Awake()
     {
-        //playerControl = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
         for (int i = 6; i < 27; i+=4)
         {
             float y_offset = Random.Range(-1f, 1f);
 
             if (isFirstPlanet)
-            {
-                if (y_offset <= 0)
-                {
-                    Instantiate(planet, new Vector2(Random.Range(-2f, -1f), i - 1), Quaternion.identity).name = "Obstacle"+((i-6) / 4).ToString();
-                }
-                else
-                {
-                    Instantiate(planet, new Vector2(Random.Range(1f, 2f), i - 1), Quaternion.identity).name = "Obstacle" + ((i - 6) / 4).ToString();
-                }
-
-                isFirstPlanet = false;
+            {                                   //-1 or 1                 
+                Instantiate(planet, new Vector2((Random.Range(0, 2) * 2 - 1)*Random.Range(1f, 2f), i - 1), Quaternion.identity).name = "Obstacle"+((i-6) / 4).ToString();
+                isFirstPlanet = false; 
                 continue;
             }
 
@@ -48,8 +38,6 @@ public class GeneratePlanets : MonoBehaviour
 
     internal void PoolMe(GameObject gameObject)
     {
-        //playerControl.offset++;
-        //playerControl.UpdateObstacleVectors(playerControl.offset);
 
         gameObject.SetActive(false);
         gameObject.SetActive(true);

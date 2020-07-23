@@ -20,9 +20,9 @@ public class PlayerControl : MonoBehaviour
     private Color half_clear;
     private GameControllerScript gamecontroller;
 
-    //private GameObject[] obstacles;
+    //private GameObject[] obstacles = new GameObject[3];
     private GameObject[] obstacle_all = new GameObject[6];
-    public int offset = 1;
+    public float speed = 5f;
 
 
     public bool lost;
@@ -78,7 +78,7 @@ public class PlayerControl : MonoBehaviour
 
         }
 
-        if (rb_player.velocity.magnitude < 8) rb_player.velocity = rb_player.velocity.normalized * 8; //keep velocity same
+        rb_player.velocity = rb_player.velocity.normalized * speed; //keep velocity same
 
         if (Input.GetMouseButtonDown(0)) //clicked
         {
@@ -87,8 +87,9 @@ public class PlayerControl : MonoBehaviour
 
             isConnected = true;
         }
-        if (Input.GetMouseButtonUp(0)) //released
+        else if (Input.GetMouseButtonUp(0)) //released
         {
+            speed *= 1.01f;
             GetComponent<DistanceJoint2D>().enabled = false;
             GetComponent<DistanceJoint2D>().connectedBody = null;
             isConnected = false;
@@ -126,15 +127,16 @@ public class PlayerControl : MonoBehaviour
     }
 
     //this function returns the closest obstacle to connect without Loops(has bugs, wasn't that much faster)
-    //private GameObject GetClosestObstacle2() 
+    //private GameObject GetClosestObstacle2(float y)
     //{
+    //    UpdateObstacleVectors(y);
     //    GameObject res;
     //    float dist0 = Vector2.Distance(obstacles[0].transform.position, transform.position);
     //    float dist1 = Vector2.Distance(obstacles[1].transform.position, transform.position);
 
     //    if (dist0 < dist1)
     //    {
-    //        res =  obstacles[0];
+    //        res = obstacles[0];
     //        gamecontroller.Orbit(res, dist0);
 
     //    }
@@ -171,16 +173,27 @@ public class PlayerControl : MonoBehaviour
 
     }
 
-    //public void UpdateObstacleVectors(int offset)
+    //public void UpdateObstacleVectors(float y)
     //{
-    //    if (offset%5 ==0)
+        
+
+
+    //    if (offset % 5 == 0)
     //    {
     //        obstacles[0] = obstacle_all[5];
     //        obstacles[1] = obstacle_all[0];
+    //        obstacles[2] = obstacle_all[1];
+
+    //    }
+    //    else if(offset % 4 == 0)
+    //    {
+    //        obstacles[0] = obstacle_all[4];
+    //        obstacles[1] = obstacle_all[5];
+    //        obstacles[2] = obstacle_all[0];
     //    }
     //    else
     //    {
-    //        obstacles = obstacle_all.Skip(offset % 6).Take(2).ToArray();
+    //        obstacles = obstacle_all.Skip(offset % 6).Take(3).ToArray();
 
     //    }
 
